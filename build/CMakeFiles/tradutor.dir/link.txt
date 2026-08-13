@@ -1,0 +1,3 @@
+"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\tradutor.dir/objects.a
+C:\MinGW\bin\ar.exe qc CMakeFiles\tradutor.dir/objects.a @CMakeFiles\tradutor.dir\objects1.rsp
+C:\MinGW\bin\g++.exe -g -Wl,--whole-archive CMakeFiles\tradutor.dir/objects.a -Wl,--no-whole-archive -o tradutor.exe -Wl,--out-implib,libtradutor.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\tradutor.dir\linkLibs.rsp

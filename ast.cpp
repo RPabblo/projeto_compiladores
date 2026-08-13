@@ -325,17 +325,29 @@ void If::Gen()
 // While
 // -----
 
+// Implementação do construtor da classe While que não existia
 While::While(Expression *e, Statement *s) : 
     Statement(NodeType::WHILE_STMT), 
     expr(e), 
     stmt(s) 
 {
-    
+    before = NewLabel(); // Rótulo de início do laço
+    after = NewLabel();  // Rótulo de saída do laço
 }
 
 void While::Gen()
 {
+    cout << "L" << before << ":" << endl; // Marca o início
+    Expression * n = Rvalue(expr);
+
+    // Se a condição for falsa, pula para o fim
+    cout << "\tifFalse " << n->ToString() << " goto L" << after << endl; 
     
+    stmt->Gen(); // Gera o código de dentro do laço
+    
+    // Volta para avaliar a condição novamente
+    cout << "\tgoto L" << before << endl; 
+    cout << "L" << after << ":" << endl; // Marca o fim
 }
 
 // --------

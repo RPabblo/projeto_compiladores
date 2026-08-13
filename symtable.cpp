@@ -13,8 +13,8 @@ SymTable::SymTable(SymTable * t) : prev(t)
 // insere um símbolo na tabela
 bool SymTable::Insert(string s, Symbol symb) 
 { 
-	const auto& [pos, success] = table.insert({s,symb});
-	return success;
+	auto inserted = table.insert({s, symb});
+	return inserted.second;
 }
 
 // busca um símbolo na tabela atual ou nas dos escopos envolventes

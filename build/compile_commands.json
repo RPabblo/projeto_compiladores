@@ -1,0 +1,50 @@
+[
+{
+  "directory": "C:/Projetos/vscode/Compiladores/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++1z -o CMakeFiles\\tradutor.dir\\ast.cpp.obj -c C:\\Projetos\\vscode\\Compiladores\\ast.cpp",
+  "file": "C:/Projetos/vscode/Compiladores/ast.cpp",
+  "output": "CMakeFiles/tradutor.dir/ast.cpp.obj"
+},
+{
+  "directory": "C:/Projetos/vscode/Compiladores/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++1z -o CMakeFiles\\tradutor.dir\\gen.cpp.obj -c C:\\Projetos\\vscode\\Compiladores\\gen.cpp",
+  "file": "C:/Projetos/vscode/Compiladores/gen.cpp",
+  "output": "CMakeFiles/tradutor.dir/gen.cpp.obj"
+},
+{
+  "directory": "C:/Projetos/vscode/Compiladores/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++1z -o CMakeFiles\\tradutor.dir\\checker.cpp.obj -c C:\\Projetos\\vscode\\Compiladores\\checker.cpp",
+  "file": "C:/Projetos/vscode/Compiladores/checker.cpp",
+  "output": "CMakeFiles/tradutor.dir/checker.cpp.obj"
+},
+{
+  "directory": "C:/Projetos/vscode/Compiladores/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++1z -o CMakeFiles\\tradutor.dir\\lexer.cpp.obj -c C:\\Projetos\\vscode\\Compiladores\\lexer.cpp",
+  "file": "C:/Projetos/vscode/Compiladores/lexer.cpp",
+  "output": "CMakeFiles/tradutor.dir/lexer.cpp.obj"
+},
+{
+  "directory": "C:/Projetos/vscode/Compiladores/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++1z -o CMakeFiles\\tradutor.dir\\parser.cpp.obj -c C:\\Projetos\\vscode\\Compiladores\\parser.cpp",
+  "file": "C:/Projetos/vscode/Compiladores/parser.cpp",
+  "output": "CMakeFiles/tradutor.dir/parser.cpp.obj"
+},
+{
+  "directory": "C:/Projetos/vscode/Compiladores/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++1z -o CMakeFiles\\tradutor.dir\\symtable.cpp.obj -c C:\\Projetos\\vscode\\Compiladores\\symtable.cpp",
+  "file": "C:/Projetos/vscode/Compiladores/symtable.cpp",
+  "output": "CMakeFiles/tradutor.dir/symtable.cpp.obj"
+},
+{
+  "directory": "C:/Projetos/vscode/Compiladores/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++1z -o CMakeFiles\\tradutor.dir\\error.cpp.obj -c C:\\Projetos\\vscode\\Compiladores\\error.cpp",
+  "file": "C:/Projetos/vscode/Compiladores/error.cpp",
+  "output": "CMakeFiles/tradutor.dir/error.cpp.obj"
+},
+{
+  "directory": "C:/Projetos/vscode/Compiladores/build",
+  "command": "C:\\MinGW\\bin\\g++.exe   -g -std=gnu++1z -o CMakeFiles\\tradutor.dir\\tradutor.cpp.obj -c C:\\Projetos\\vscode\\Compiladores\\tradutor.cpp",
+  "file": "C:/Projetos/vscode/Compiladores/tradutor.cpp",
+  "output": "CMakeFiles/tradutor.dir/tradutor.cpp.obj"
+}
+]

@@ -1,0 +1,3 @@
+C:/Projetos/vscode/Compiladores/build/CMakeFiles/tradutor.dir
+C:/Projetos/vscode/Compiladores/build/CMakeFiles/edit_cache.dir
+C:/Projetos/vscode/Compiladores/build/CMakeFiles/rebuild_cache.dir

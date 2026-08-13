@@ -145,6 +145,8 @@ struct While : public Statement
     Statement *stmt;
     While(Expression *e, Statement *s);
     void Gen();
+    unsigned before;
+    unsigned after;
 };
 
 struct DoWhile : public Statement
@@ -154,6 +156,7 @@ struct DoWhile : public Statement
     Expression *expr;
     DoWhile(Statement *s, Expression *e);
     void Gen();
+
 };
 
 #endif
