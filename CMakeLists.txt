@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.10.0)
 project(Tradutor)
 set(CMAKE_CXX_STANDARD 17)
 set(SOURCE_FILES ast.cpp gen.cpp checker.cpp lexer.cpp parser.cpp symtable.cpp error.cpp tradutor.cpp)

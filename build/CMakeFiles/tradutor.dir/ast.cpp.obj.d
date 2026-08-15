@@ -115,4 +115,10 @@ CMakeFiles/tradutor.dir/ast.cpp.obj: \
  c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\hashtable_policy.h \
  c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\unordered_map.h \
  C:\Projetos\vscode\Compiladores\error.h \
- C:\Projetos\vscode\Compiladores\gen.h
+ C:\Projetos\vscode\Compiladores\gen.h \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\vector \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_construct.h \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_uninitialized.h \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_vector.h \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_bvector.h \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\vector.tcc

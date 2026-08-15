@@ -337,18 +337,19 @@ While::While(Expression *e, Statement *s) :
 
 void While::Gen()
 {
-    cout << "L" << before << ":" << endl; // Marca o início
+    programaTAC.push_back(InstrucaoTAC("label", "", "L" + std::to_string(before))); // marca o início do laço
+    
     Expression * n = Rvalue(expr);
 
     // Se a condição for falsa, pula para o fim
-    cout << "\tifFalse " << n->ToString() << " goto L" << after << endl; 
-    
+    programaTAC.push_back(InstrucaoTAC("ifFalse", "", n->ToString(), "L" + std::to_string(after)));     
     stmt->Gen(); // Gera o código de dentro do laço
     
     // Volta para avaliar a condição novamente
-    cout << "\tgoto L" << before << endl; 
-    cout << "L" << after << ":" << endl; // Marca o fim
-}
+    programaTAC.push_back(InstrucaoTAC("goto", "", "L" + std::to_string(before)));  
+    
+    // Marca o fim do laço
+    programaTAC.push_back(InstrucaoTAC("label", "", "L" + std::to_string(after)));}
 
 // --------
 // Do-While

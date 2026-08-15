@@ -102,6 +102,14 @@ CMakeFiles/tradutor.dir/gen.cpp.obj: \
  c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\istream.tcc \
  C:\Projetos\vscode\Compiladores\error.h \
  C:\Projetos\vscode\Compiladores\gen.h \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\sstream \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\sstream.tcc \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\vector \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_construct.h \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_uninitialized.h \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_vector.h \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_bvector.h \
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\vector.tcc \
  C:\Projetos\vscode\Compiladores\ast.h \
  C:\Projetos\vscode\Compiladores\lexer.h \
  c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\unordered_map \
@@ -113,6 +121,4 @@ CMakeFiles/tradutor.dir/gen.cpp.obj: \
  c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\ext\aligned_buffer.h \
  c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\hashtable.h \
  c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\hashtable_policy.h \
- c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\unordered_map.h \
- c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\sstream \
- c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\sstream.tcc
+ c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\unordered_map.h

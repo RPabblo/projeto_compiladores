@@ -37,10 +37,18 @@ Expression *Rvalue(Expression *n)
         Temp * t = new Temp(ari->type);
         Expression * e1 = Rvalue(ari->expr1);
         Expression * e2 = Rvalue(ari->expr2);
-        cout << '\t' << t->ToString() << " = " 
+
+/*         cout << '\t' << t->ToString() << " = " 
              << e1->ToString() << " " 
              << ari->ToString() << " " 
-             << e2->ToString() << endl;
+             << e2->ToString() << endl; */
+        programaTAC.push_back(InstrucaoTAC(
+            ari->ToString(),   // op (ex: "+")
+            t->ToString(),     // dest (ex: "t1")
+            e1->ToString(),    // arg1 (ex: "a")
+            e2->ToString()     // arg2 (ex: "b")
+        ));
+
         return t;
     }
     else if (n->node_type == NodeType::REL)
@@ -93,11 +101,14 @@ Expression *Rvalue(Expression *n)
         Access * acc = (Access*) Lvalue(n);
         Expression * left = Lvalue(acc->id);
         Expression * right = Rvalue(acc->expr);
-        cout << '\t' 
+/*         cout << '\t' 
              << left->ToString()  
              << " = " 
              << right->ToString() 
-             << endl;
+             << endl; */
+
+    programaTAC.push_back(InstrucaoTAC("=", left->ToString(), right->ToString()));
+        
         return right;
     }
     else
@@ -105,5 +116,33 @@ Expression *Rvalue(Expression *n)
         stringstream ss;
         ss << "Expressão \'" << n->ToString() << "\' não possui valor-r";
         throw SyntaxError{scanner->Lineno(), ss.str()};
+    }
+}
+
+
+
+// novos
+
+
+
+
+// A nossa "memória" do programa compilado
+std::vector<InstrucaoTAC> programaTAC;
+
+// Lê a nossa lista de memória e imprime na tela exatamente como os antigos "cout" faziam
+void ImprimirTAC() {
+    for (const auto& inst : programaTAC) {
+        if (inst.op == "label") {
+            std::cout << inst.arg1 << ":" << std::endl;
+        } else if (inst.op == "goto") {
+            std::cout << "\tgoto " << inst.arg1 << std::endl;
+        } else if (inst.op == "ifFalse" || inst.op == "ifTrue") {
+            std::cout << "\t" << inst.op << " " << inst.arg1 << " goto " << inst.arg2 << std::endl;
+        } else if (inst.op == "=") {
+            std::cout << "\t" << inst.dest << " = " << inst.arg1 << std::endl;
+        } else {
+            // Operações normais (ex: t1 = a + b)
+            std::cout << "\t" << inst.dest << " = " << inst.arg1 << " " << inst.op << " " << inst.arg2 << std::endl;
+        }
     }
 }

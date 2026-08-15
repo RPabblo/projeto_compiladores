@@ -37,6 +37,8 @@ int main(int argc, char **argv)
 			
 			// gera código intermediário
 			ast->Gen();
+
+			ImprimirTAC();
 		}
 		catch (SyntaxError err)
 		{
