@@ -57,10 +57,17 @@ Expression *Rvalue(Expression *n)
         Temp * t = new Temp(rel->type);
         Expression * e1 = Rvalue(rel->expr1);
         Expression * e2 = Rvalue(rel->expr2);
-        cout << '\t' << t->ToString() << " = " 
+/*         cout << '\t' << t->ToString() << " = " 
              << e1->ToString() << " " 
              << rel->ToString() << " " 
-             << e2->ToString() << endl;
+             << e2->ToString() << endl; */
+        programaTAC.push_back(InstrucaoTAC(
+            rel->ToString(),   // op (ex: "<")
+            t->ToString(),     // dest (ex: "t1")
+            e1->ToString(),    // arg1 (ex: "a")
+            e2->ToString()     // arg2 (ex: "b")
+        ));
+
         return t;
     }
     else if (n->node_type == NodeType::LOG)
@@ -69,10 +76,16 @@ Expression *Rvalue(Expression *n)
         Temp * t = new Temp(log->type);
         Expression * e1 = Rvalue(log->expr1);
         Expression * e2 = Rvalue(log->expr2);
-        cout << '\t' << t->ToString() << " = " 
+        /*         cout << '\t' << t->ToString() << " = " 
              << e1->ToString() << " " 
-             << log->ToString() << " " 
-             << e2->ToString() << endl;
+             <<  log->ToString() << " " 
+             << e2->ToString() << endl;*/
+        programaTAC.push_back(InstrucaoTAC(
+            log->ToString(),   // op (ex: "&&")
+            t->ToString(),     // dest (ex: "t1")
+            e1->ToString(),    // arg1 (ex: "a")
+            e2->ToString()     // arg2 (ex: "b")
+        ));
         return t;
     }
     else if (n->node_type == NodeType::UNARY)
@@ -80,10 +93,12 @@ Expression *Rvalue(Expression *n)
         UnaryExpr * una = (UnaryExpr*) n;
         Temp * t = new Temp(una->type);
         Expression * e = Rvalue(una->expr);
-        cout << '\t' << t->ToString() << " = " 
-             << una->ToString() 
-             << e->ToString() 
-             << endl;
+        programaTAC.push_back(InstrucaoTAC(
+            una->ToString(),   // op (ex: "!")
+            t->ToString(),     // dest (ex: "t1")
+            e->ToString(),     // arg1 (ex: "a")
+            ""                // arg2 (ex: "")
+        )); 
         return t;
     }
     else if (n->node_type == NodeType::ACCESS)
@@ -91,9 +106,15 @@ Expression *Rvalue(Expression *n)
         Access * access = (Access*) n;
         Temp * temp = new Temp(access->type);
         Expression * right = Lvalue(n);
-        cout << '\t' << temp->ToString() << " = " 
-             << right->ToString() 
-             << endl;
+/*                 cout << '\t' << temp->ToString() << " = " 
+                    << right->ToString() 
+                    << endl; */
+        programaTAC.push_back(InstrucaoTAC(
+            "=",                // op (ex: "=")
+            temp->ToString(),   // dest (ex: "t1")
+            right->ToString(),  // arg1 (ex: "a")
+            ""                  // arg2 (ex: "")
+        ));
         return temp;
     }
     else if (n->node_type == NodeType::ASSIGN)
@@ -106,8 +127,7 @@ Expression *Rvalue(Expression *n)
              << " = " 
              << right->ToString() 
              << endl; */
-
-    programaTAC.push_back(InstrucaoTAC("=", left->ToString(), right->ToString()));
+        programaTAC.push_back(InstrucaoTAC("=", left->ToString(), right->ToString()));
         
         return right;
     }

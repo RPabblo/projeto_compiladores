@@ -289,7 +289,9 @@ void Assign::Gen()
 {
     Expression * left = Lvalue(id);
     Expression * right = Rvalue(expr);
-    cout << '\t' << left->ToString() << " = " << right->ToString() << endl;
+    //cout << '\t' << left->ToString() << " = " << right->ToString() << endl;
+
+    programaTAC.push_back(InstrucaoTAC("=", left->ToString(), right->ToString()));
 }
 
 // ----
@@ -316,9 +318,9 @@ If::If(Expression *e, Statement *s) :
 void If::Gen()
 {
     Expression * n = Rvalue(expr);
-    cout << "\tifFalse " << n->ToString() << " goto L" << after << endl;
+    programaTAC.push_back(InstrucaoTAC("ifFalse", "", n->ToString(), "L" + std::to_string(after)));
     stmt->Gen();
-    cout << 'L' << after << ':' << endl;
+    programaTAC.push_back(InstrucaoTAC("label", "", "L" + std::to_string(after)));
 }
 
 // -----
@@ -366,8 +368,8 @@ DoWhile::DoWhile(Statement *s, Expression *e) :
 
 void DoWhile::Gen()
 {
-    cout << 'L' << before << ':' << endl;
+    programaTAC.push_back(InstrucaoTAC("label", "", "L" + std::to_string(before)));
     stmt->Gen();
     Expression * n = Rvalue(expr);
-    cout << "\tifTrue " << n->ToString() << " goto L" << before << endl;
+    programaTAC.push_back(InstrucaoTAC("ifTrue", "", n->ToString(), "L" + std::to_string(before)));
 }
