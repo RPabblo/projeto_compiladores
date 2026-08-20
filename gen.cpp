@@ -1,4 +1,9 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <map>
+
 #include "error.h"
 #include "gen.h"
 using std::cout;
@@ -163,6 +168,85 @@ void ImprimirTAC() {
         } else {
             // Operações normais (ex: t1 = a + b)
             std::cout << "\t" << inst.dest << " = " << inst.arg1 << " " << inst.op << " " << inst.arg2 << std::endl;
+        }
+    }
+}
+
+
+// Função auxiliar para verificar se a string é um número (inteiro ou float)
+bool isNumber(const std::string& s) {
+    if (s.empty()) return false;
+    for (char c : s) {
+        if (!isdigit(c) && c != '.') return false;
+    }
+    return true;
+}
+
+// O motor de otimização
+void OtimizarTAC() {
+    bool modificou = true;
+    
+    while (modificou) {
+        modificou = false;
+        
+        // Esta é a nossa "memória" da Propagação de Constantes
+        std::map<std::string, std::string> tabelaConstantes; 
+        
+        for (auto& inst : programaTAC) {
+            
+            // ==========================================
+            // 1. PROPAGAÇÃO (Substituir variáveis)
+            // ==========================================
+            // Se o arg1 for uma variável que conhecemos o valor, troca pelo número!
+            if (tabelaConstantes.count(inst.arg1)) {
+                inst.arg1 = tabelaConstantes[inst.arg1];
+                modificou = true;
+            }
+            // Faz o mesmo para o arg2
+            if (tabelaConstantes.count(inst.arg2)) {
+                inst.arg2 = tabelaConstantes[inst.arg2];
+                modificou = true;
+            }
+
+            // ==========================================
+            // 2. DOBRAMENTO (O que já tínhamos)
+            // ==========================================
+            if (inst.op == "+" || inst.op == "-" || inst.op == "*" || inst.op == "/") {
+                if (isNumber(inst.arg1) && isNumber(inst.arg2)) {
+                    float val1 = std::stof(inst.arg1);
+                    float val2 = std::stof(inst.arg2);
+                    float resultado = 0;
+
+                    if (inst.op == "+") resultado = val1 + val2;
+                    else if (inst.op == "-") resultado = val1 - val2;
+                    else if (inst.op == "*") resultado = val1 * val2;
+                    else if (inst.op == "/") {
+                        if (val2 != 0) resultado = val1 / val2;
+                        else continue; 
+                    }
+
+                    std::string str_resultado = (resultado == (int)resultado) 
+                                                ? std::to_string((int)resultado) 
+                                                : std::to_string(resultado);
+
+                    inst.op = "=";
+                    inst.arg1 = str_resultado;
+                    inst.arg2 = "";
+                    modificou = true;
+                }
+            }
+
+            // ==========================================
+            // 3. REGISTRO DE CONSTANTES NA MEMÓRIA
+            // ==========================================
+            // Se a instrução virou uma atribuição de número (Ex: t2 = 10)
+            if (inst.op == "=" && isNumber(inst.arg1)) {
+                
+                // ATENÇÃO: Substitua "inst.res" pelo nome correto do campo 
+                // da sua struct InstrucaoTAC que guarda o destino da variável!
+                // Pode ser inst.resultado, inst.destino, inst.res, etc.
+                tabelaConstantes[inst.dest] = inst.arg1; 
+            }
         }
     }
 }

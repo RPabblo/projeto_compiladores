@@ -27,5 +27,6 @@ extern std::vector<InstrucaoTAC> programaTAC;
 
 // Função que imprimirá o código no terminal (após otimizarmos)
 void ImprimirTAC();
+void OtimizarTAC(); 
 
 #endif

@@ -36,9 +36,13 @@ int main(int argc, char **argv)
 			ast = tradutor.Start();
 			
 			// gera código intermediário
-			ast->Gen();
+            ast->Gen();
+            
+            // OTIMIZAÇÃO ACONTECE AQUI!
+            OtimizarTAC();
 
-			ImprimirTAC();
+            // imprime o código
+            ImprimirTAC();
 		}
 		catch (SyntaxError err)
 		{
