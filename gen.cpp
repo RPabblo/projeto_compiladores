@@ -249,4 +249,98 @@ void OtimizarTAC() {
             }
         }
     }
+
+
+
+    // ELIMINAÇÃO DE CÓDIGO MORTO (Dead Code Elimination - DCE)
+   
+    bool modificouDCE = true;
+    
+    // O while roda até o compilador não achar mais nenhum "lixo" para apagar
+    while (modificouDCE) {
+        modificouDCE = false;
+        
+        // Dicionário para anotar quantas vezes cada variável é usada
+        std::map<std::string, int> contagemUso;
+        
+        // Passo 1: Varre o programa e conta quem é lido
+        for (const auto& inst : programaTAC) {
+            // "goto" puro e "label" não usam variáveis matemáticas
+            // (Mas ifFalse usa, então ele entra na contagem!)
+            if (inst.op != "label" && inst.op != "goto") {
+                if (!inst.arg1.empty() && !isNumber(inst.arg1)) {
+                    contagemUso[inst.arg1]++;
+                }
+                if (!inst.arg2.empty() && !isNumber(inst.arg2)) {
+                    contagemUso[inst.arg2]++;
+                }
+            }
+        }
+
+        // Passo 2: A Vassoura (Varre e apaga as variáveis não utilizadas)
+        // Usamos um iterador (it) porque vamos deletar itens da lista dinamicamente
+        for (auto it = programaTAC.begin(); it != programaTAC.end(); ) {
+            
+            // Verifica se a instrução grava algum valor em uma variável
+            if (it->op == "=" || it->op == "+" || it->op == "-" || it->op == "*" || it->op == "/") {
+                
+
+                std::string destino = it->dest; 
+                
+                // Verifica se a variável de destino é um Temporário (começa com 't' e um número)
+                bool isTemporario = (destino.length() >= 2 && destino[0] == 't' && isdigit(destino[1]));
+                
+                // Se for um temporário E ninguém estiver usando ele (contagem zero)
+                if (isTemporario && contagemUso[destino] == 0) {
+                    
+                    // Apaga a instrução inteira do TAC e ajusta a lista
+                    it = programaTAC.erase(it); 
+                    modificouDCE = true; // Avisa que apagamos algo, vamos varrer de novo!
+                    
+                    continue; // Pula para a próxima repetição para não quebrar o iterador
+                }
+            }
+            ++it; // Vai para a próxima instrução
+        }
+    }
+    // FIM DA ELIMINAÇÃO DE CÓDIGO MORTO
+
+
+    // FASE: LOOP UNROLLING (Fator 2)
+
+    for (size_t i = 0; i < programaTAC.size(); i++) {
+       
+        // 1. Identifica o início do laço (label ou rótulo)
+        if (programaTAC[i].op == "label" || programaTAC[i].op.find("L") == 0) {
+            size_t start_loop = i;
+            size_t end_loop = 0;
+            std::string label_name = programaTAC[i].arg1; 
+            if (label_name.empty()) label_name = programaTAC[i].op; // Depende da sua struct
+
+            // 2. Procura onde o laço termina (o goto que volta pro início)
+            for (size_t j = i + 1; j < programaTAC.size(); j++) {
+                if (programaTAC[j].op == "goto" && programaTAC[j].arg1 == label_name) {
+                    end_loop = j;
+                    break;
+                }
+            }
+
+            // 3. Se achou um laço válido, vamos duplicar o miolo!
+            if (end_loop > start_loop) {
+                std::vector<InstrucaoTAC> miolo;
+                
+                // Extrai as instruções de dentro do laço (pula a condição ifFalse e o goto)
+                // Ajuste os índices '+2' se o seu ifFalse não estiver imediatamente após o label
+                for (size_t k = start_loop + 2; k < end_loop; k++) {
+                    miolo.push_back(programaTAC[k]);
+                }
+
+                // Insere o miolo extra antes do salto final
+                programaTAC.insert(programaTAC.begin() + end_loop, miolo.begin(), miolo.end());
+                
+                // Quebra para evitar loop infinito na manipulação do vetor
+                break; 
+            }
+        }
+    }
 }
