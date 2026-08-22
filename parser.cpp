@@ -290,6 +290,7 @@ Expression *Parser::Local()
             throw SyntaxError{scanner->Lineno(), ss.str()};
         }
 
+        
         // identifica o tipo da expressão
         int etype = ExprType::VOID;
         if (s->type == "int")

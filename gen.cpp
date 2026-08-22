@@ -151,10 +151,10 @@ Expression *Rvalue(Expression *n)
 
 
 
-// A nossa "memória" do programa compilado
+// A memória do programa compilado
 std::vector<InstrucaoTAC> programaTAC;
 
-// Lê a nossa lista de memória e imprime na tela exatamente como os antigos "cout" faziam
+// Lê a lista de memória e imprime na tela exatamente como os antigos COUT faziam
 void ImprimirTAC() {
     for (const auto& inst : programaTAC) {
         if (inst.op == "label") {
@@ -194,29 +194,31 @@ void OtimizarTAC() {
         
         for (auto& inst : programaTAC) {
             
-            // ==========================================
+           
             // 1. PROPAGAÇÃO (Substituir variáveis)
-            // ==========================================
-            // Se o arg1 for uma variável que conhecemos o valor, troca pelo número!
+          
+            // Se o arg1 for uma variável que o valor é conhecido em tempo de compilação, substituímos pelo valor
             if (tabelaConstantes.count(inst.arg1)) {
                 inst.arg1 = tabelaConstantes[inst.arg1];
                 modificou = true;
             }
-            // Faz o mesmo para o arg2
+            // Se o arg2 for uma variável que o valor é conhecido em tempo de compilação, substituímos pelo valor
             if (tabelaConstantes.count(inst.arg2)) {
                 inst.arg2 = tabelaConstantes[inst.arg2];
                 modificou = true;
             }
 
-            // ==========================================
-            // 2. DOBRAMENTO (O que já tínhamos)
-            // ==========================================
+      
+            // 2. DOBRAMENTO DE CONSTANTES (Constant Folding)
+
+            // Se a operação é aritmética e ambos os argumentos são números, podemos calcular o resultado em tempo de compilação
             if (inst.op == "+" || inst.op == "-" || inst.op == "*" || inst.op == "/") {
                 if (isNumber(inst.arg1) && isNumber(inst.arg2)) {
                     float val1 = std::stof(inst.arg1);
                     float val2 = std::stof(inst.arg2);
                     float resultado = 0;
 
+                    // Calcula o resultado da operação
                     if (inst.op == "+") resultado = val1 + val2;
                     else if (inst.op == "-") resultado = val1 - val2;
                     else if (inst.op == "*") resultado = val1 * val2;
@@ -236,15 +238,13 @@ void OtimizarTAC() {
                 }
             }
 
-            // ==========================================
+         
             // 3. REGISTRO DE CONSTANTES NA MEMÓRIA
-            // ==========================================
-            // Se a instrução virou uma atribuição de número (Ex: t2 = 10)
+            
+            // Se a instrução é uma atribuição de constante (ex: t1 = 10), registramos que t1 agora tem o valor 10
             if (inst.op == "=" && isNumber(inst.arg1)) {
                 
-                // ATENÇÃO: Substitua "inst.res" pelo nome correto do campo 
-                // da sua struct InstrucaoTAC que guarda o destino da variável!
-                // Pode ser inst.resultado, inst.destino, inst.res, etc.
+  
                 tabelaConstantes[inst.dest] = inst.arg1; 
             }
         }
@@ -254,6 +254,7 @@ void OtimizarTAC() {
 
     // ELIMINAÇÃO DE CÓDIGO MORTO (Dead Code Elimination - DCE)
    
+    // A ideia é varrer o programa várias vezes, apagando instruções que escrevem em variáveis temporárias que nunca são lidas
     bool modificouDCE = true;
     
     // O while roda até o compilador não achar mais nenhum "lixo" para apagar
@@ -265,7 +266,7 @@ void OtimizarTAC() {
         
         // Passo 1: Varre o programa e conta quem é lido
         for (const auto& inst : programaTAC) {
-            // "goto" puro e "label" não usam variáveis matemáticas
+            // Ignora instruções que não leem variáveis (como label e goto) 
             // (Mas ifFalse usa, então ele entra na contagem!)
             if (inst.op != "label" && inst.op != "goto") {
                 if (!inst.arg1.empty() && !isNumber(inst.arg1)) {
@@ -277,8 +278,8 @@ void OtimizarTAC() {
             }
         }
 
-        // Passo 2: A Vassoura (Varre e apaga as variáveis não utilizadas)
-        // Usamos um iterador (it) porque vamos deletar itens da lista dinamicamente
+        // Passo 2: Varre o programa e apaga instruções que escrevem em variáveis temporárias que nunca são lidas
+        // Atenção: usamos um iterador para poder apagar elementos do vetor sem quebrar o loop
         for (auto it = programaTAC.begin(); it != programaTAC.end(); ) {
             
             // Verifica se a instrução grava algum valor em uma variável
@@ -307,7 +308,7 @@ void OtimizarTAC() {
 
 
     // FASE: LOOP UNROLLING (Fator 2)
-
+    // A ideia é identificar laços simples e duplicar o corpo do laço para reduzir overhead de controle de loop
     for (size_t i = 0; i < programaTAC.size(); i++) {
        
         // 1. Identifica o início do laço (label ou rótulo)
@@ -325,12 +326,12 @@ void OtimizarTAC() {
                 }
             }
 
-            // 3. Se achou um laço válido, vamos duplicar o miolo!
+            // 3. Se achou um laço válido, vamos duplicar o core do loop
             if (end_loop > start_loop) {
                 std::vector<InstrucaoTAC> miolo;
                 
                 // Extrai as instruções de dentro do laço (pula a condição ifFalse e o goto)
-                // Ajuste os índices '+2' se o seu ifFalse não estiver imediatamente após o label
+                // O miolo do loop começa depois do label e termina antes do goto
                 for (size_t k = start_loop + 2; k < end_loop; k++) {
                     miolo.push_back(programaTAC[k]);
                 }

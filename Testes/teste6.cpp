@@ -1,9 +1,9 @@
 int main() {
-    
-int b;
-int c;
+    int a;
+    int b;
+    int c;
 
-b = 20 + 5 * 2;
-c = 10 / 2 + 1;
+    a = 10 * 5;
+    b = a / 2;
+    c = b + 15;
 }
-

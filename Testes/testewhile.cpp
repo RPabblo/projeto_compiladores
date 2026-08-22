@@ -6,7 +6,7 @@ int main()
     i = 0;
     soma = 0;
 
-    while (i < 10000000000000000) {
+    while (i < 10000000) {
         soma = soma + i;
         i = i + 1;
     }
