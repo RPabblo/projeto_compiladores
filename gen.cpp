@@ -166,7 +166,6 @@ void ImprimirTAC() {
         } else if (inst.op == "=") {
             std::cout << "\t" << inst.dest << " = " << inst.arg1 << std::endl;
         } else {
-            // Operações normais (ex: t1 = a + b)
             std::cout << "\t" << inst.dest << " = " << inst.arg1 << " " << inst.op << " " << inst.arg2 << std::endl;
         }
     }
@@ -189,12 +188,16 @@ void OtimizarTAC() {
     while (modificou) {
         modificou = false;
         
-        // Esta é a nossa "memória" da Propagação de Constantes
+        // Esta é a "memória" da Propagação de Constantes
         std::map<std::string, std::string> tabelaConstantes; 
         
         for (auto& inst : programaTAC) {
             
-           
+           // Limpa o mapeamento se houver desvio de fluxo
+            if (inst.op == "label" || inst.op == "goto" || inst.op == "ifFalse" || inst.op == "ifTrue") {
+                tabelaConstantes.clear();
+                continue;
+            }
             // 1. PROPAGAÇÃO (Substituir variáveis)
           
             // Se o arg1 for uma variável que o valor é conhecido em tempo de compilação, substituímos pelo valor
